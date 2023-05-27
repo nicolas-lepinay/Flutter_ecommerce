@@ -64,7 +64,53 @@ class _FoodPageBodyState extends State<FoodPageBody> {
             activeShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
             activeColor: AppColors.mainColor,
           ),
-        )
+        ),
+        // POPULAR ITEMS :
+        SizedBox(height: Dimensions.height30),
+        Container(
+          margin: EdgeInsets.only(left: Dimensions.width30),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: [
+              BigText(text: "Populaires"),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: BigText(text: "•", color: Colors.black12),
+              ),
+              Container(
+                child: SmallText(text: "Recettes"),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          height: 700,
+          child: ListView.builder(
+            physics: AlwaysScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: 10,
+            itemBuilder: (context, index) => Container(
+              margin: EdgeInsets.symmetric(vertical: 5, horizontal: Dimensions.width20),
+              child: Row(
+                children: [
+                  Container(
+                    height: 120,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Dimensions.radius20),
+                      color: Colors.white38, // Placeholder while loading
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage("assets/image/blueberry-cheesecake.webp"),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
