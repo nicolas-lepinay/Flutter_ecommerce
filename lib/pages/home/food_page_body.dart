@@ -1,11 +1,12 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce/widgets/app_column.dart';
 import 'package:flutter_ecommerce/widgets/icon_and_text_widget.dart';
 
-import '../utils/colors.dart';
-import '../utils/dimensions.dart';
-import '../widgets/big_text.dart';
-import '../widgets/small_text.dart';
+import '../../utils/colors.dart';
+import '../../utils/dimensions.dart';
+import '../../widgets/big_text.dart';
+import '../../widgets/small_text.dart';
 
 class FoodPageBody extends StatefulWidget {
   const FoodPageBody({super.key});
@@ -69,45 +70,101 @@ class _FoodPageBodyState extends State<FoodPageBody> {
         SizedBox(height: Dimensions.height30),
         Container(
           margin: EdgeInsets.only(left: Dimensions.width30),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              BigText(text: "Populaires"),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: BigText(text: "•", color: Colors.black12),
-              ),
-              Container(
-                child: SmallText(text: "Recettes"),
-              ),
-            ],
+          child: Padding(
+            padding: EdgeInsets.only(bottom: Dimensions.height15),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                BigText(text: "Populaires"),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: BigText(text: "•", color: Colors.black12),
+                ),
+                Container(
+                  child: SmallText(text: "Recettes"),
+                ),
+              ],
+            ),
           ),
         ),
-        Container(
-          height: 700,
-          child: ListView.builder(
-            physics: AlwaysScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: 10,
-            itemBuilder: (context, index) => Container(
-              margin: EdgeInsets.symmetric(vertical: 5, horizontal: Dimensions.width20),
-              child: Row(
-                children: [
-                  Container(
-                    height: 120,
-                    width: 120,
+        ListView.builder(
+          physics: const NeverScrollableScrollPhysics(), // List is not scrollable
+          // See doc :
+          //"If the scroll view does not shrink wrap, then the scroll view will expand
+          //to the maximum allowed size in the scrollDirection.
+          //If the scroll view has unbounded constraints in the scrollDirection,
+          //then shrinkWrap must be true."
+          shrinkWrap: true, // Necessary (or wrap ListView in a Container to remove it)
+          itemCount: 10,
+          itemBuilder: (context, index) => Container(
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: Dimensions.width20),
+            child: Row(
+              children: [
+                // IMAGE SECTION
+                Container(
+                  // height: 120,
+                  // width: 120,
+                  height: Dimensions.listViewImageSize,
+                  width: Dimensions.listViewImageSize,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(Dimensions.radius20),
+                    color: Colors.white38, // Placeholder while loading image
+                    image: const DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage("assets/image/blueberry-cheesecake.webp"),
+                    ),
+                  ),
+                ),
+                // TEXT SECTION
+                Expanded(
+                  child: Container(
+                    //height: 100,
+                    height: Dimensions.listViewTextContainerSize,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(Dimensions.radius20),
-                      color: Colors.white38, // Placeholder while loading
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage("assets/image/blueberry-cheesecake.webp"),
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(Dimensions.radius20),
+                        bottomRight: Radius.circular(Dimensions.radius20),
+                      ),
+                      color: Colors.white,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          BigText(text: "Cheesecake aux myrtilles"),
+                          Spacer(),
+                          SmallText(text: "Cheesecake sans cuisson"),
+                          Spacer(flex: 2),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconAndTextWidgets(
+                                icon: Icons.circle_sharp,
+                                text: "Normal",
+                                iconColor: AppColors.iconColor1,
+                              ),
+                              IconAndTextWidgets(
+                                icon: Icons.location_on,
+                                text: "1.7 km",
+                                iconColor: AppColors.mainColor,
+                              ),
+                              IconAndTextWidgets(
+                                icon: Icons.access_time_rounded,
+                                text: "35 min",
+                                iconColor: AppColors.iconColor2,
+                              ),
+                            ],
+                          ),
+                          Spacer(flex: 3),
+                        ],
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -184,53 +241,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                   ]),
               child: Container(
                 padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BigText(text: "Pommes"),
-                    const Spacer(),
-                    Row(
-                      children: [
-                        Wrap(
-                          children: List.generate(
-                            5,
-                            (index) => Icon(
-                              Icons.star,
-                              color: AppColors.mainColor,
-                              size: 15,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        SmallText(text: "4.5"),
-                        const SizedBox(width: 10),
-                        SmallText(text: "755 avis"),
-                      ],
-                    ),
-                    const Spacer(flex: 2),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconAndTextWidgets(
-                          icon: Icons.circle_sharp,
-                          text: "Normal",
-                          iconColor: AppColors.iconColor1,
-                        ),
-                        IconAndTextWidgets(
-                          icon: Icons.location_on,
-                          text: "1.7 km",
-                          iconColor: AppColors.mainColor,
-                        ),
-                        IconAndTextWidgets(
-                          icon: Icons.access_time_rounded,
-                          text: "35 min",
-                          iconColor: AppColors.iconColor2,
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                  ],
-                ),
+                child: AppColumn(text: "Pommes"),
               ),
             ),
           ),
