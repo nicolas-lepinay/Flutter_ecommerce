@@ -105,14 +105,16 @@ class PopularFoodDetail extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(Dimensions.radius20),
               ),
-              child: Row(children: [
-                Icon(Icons.remove, color: AppColors.signColor),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
-                  child: BigText(text: "0"),
-                ),
-                Icon(Icons.add, color: AppColors.signColor),
-              ]),
+              child: Row(
+                children: [
+                  Icon(Icons.remove, color: AppColors.signColor),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
+                    child: BigText(text: "0"),
+                  ),
+                  Icon(Icons.add, color: AppColors.signColor),
+                ],
+              ),
             ),
             Container(
               padding: EdgeInsets.symmetric(
@@ -121,7 +123,7 @@ class PopularFoodDetail extends StatelessWidget {
                 color: AppColors.mainColor,
                 borderRadius: BorderRadius.circular(Dimensions.radius20),
               ),
-              child: BigText(text: "10.00€ | Ajouter", color: Colors.white),
+              child: BigText(text: "10.00€  |  Ajouter", color: Colors.white),
             ),
           ],
         ),
