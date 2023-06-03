@@ -4,8 +4,11 @@ import 'package:flutter_ecommerce/pages/food/recommended_food_detail.dart';
 import 'package:get/get.dart';
 
 import 'pages/home/main_food_page.dart';
+import 'helper/dependencies.dart' as dependencies;
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Makes sure app wait until dependencies are loaded
+  await dependencies.init();
   runApp(const MyApp());
 }
 
