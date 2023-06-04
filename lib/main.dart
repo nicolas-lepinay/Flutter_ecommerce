@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce/controllers/popular_product_controller.dart';
 import 'package:flutter_ecommerce/pages/food/popular_food_detail.dart';
 import 'package:flutter_ecommerce/pages/food/recommended_food_detail.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.find<PopularProductController>().getPopularProductList();
+
     // GetMaterialApp (instead of MaterialApp) to get the context (in order to use GetX Package)
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,

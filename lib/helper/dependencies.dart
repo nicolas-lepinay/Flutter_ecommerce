@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 Future<void> init() async {
   // 1. Load API Client
-  Get.lazyPut(() => ApiClient(appBaseUrl: "my-url"));
+  Get.lazyPut(() => ApiClient(appBaseUrl: "http://mvs.bslmeiyu.com"));
 
   // 2. Load repositories
   Get.lazyPut(() => PopularProductRepo(apiClient: Get.find())); // Needs API Client

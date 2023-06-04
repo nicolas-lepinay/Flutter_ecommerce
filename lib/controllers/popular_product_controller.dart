@@ -1,4 +1,5 @@
 import 'package:flutter_ecommerce/data/repository/popular_product_repo.dart';
+import 'package:flutter_ecommerce/models/products_model.dart';
 import 'package:get/get.dart';
 
 class PopularProductController extends GetxController {
@@ -16,8 +17,11 @@ class PopularProductController extends GetxController {
     Response response = await popularProductRepo.getPopularProductList();
     if (response.statusCode == 200) {
       _popularProductList = []; // Empty the list first so we never get repeated data
-      //_popularProductList.addAll(); // Add response data to the list
+      _popularProductList
+          .addAll(Product.fromJson(response.body).products); // Add response data to the list
       update(); // Update UI like a setState
-    } else {}
+    } else {
+      print("FAIL");
+    }
   }
 }
