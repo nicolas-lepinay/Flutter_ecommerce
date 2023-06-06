@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/controllers/popular_product_controller.dart';
+import 'package:flutter_ecommerce/controllers/recommended_product_controller.dart';
 import 'package:flutter_ecommerce/pages/food/popular_food_detail.dart';
 import 'package:flutter_ecommerce/pages/food/recommended_food_detail.dart';
+import 'package:flutter_ecommerce/routes/route_helper.dart';
 import 'package:get/get.dart';
 
 import 'pages/home/main_food_page.dart';
@@ -19,16 +21,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.find<PopularProductController>().getPopularProductList();
+    Get.find<RecommendedProductController>().getRecommendedProductList();
 
     // GetMaterialApp (instead of MaterialApp) to get the context (in order to use GetX Package)
     return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        //home: const MainFoodPage());
-        //home: const PopularFoodDetail());
-        home: const RecommendedFoodDetail());
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      // theme: ThemeData(
+      //   primarySwatch: Colors.blue,
+      // ),
+      home: const MainFoodPage(),
+      initialRoute: RouteHelper.initial,
+      getPages: RouteHelper.routes,
+    );
+    //home: const PopularFoodDetail());
+    //home: const RecommendedFoodDetail());
   }
 }

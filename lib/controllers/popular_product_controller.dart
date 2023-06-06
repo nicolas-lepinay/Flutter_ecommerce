@@ -6,10 +6,13 @@ class PopularProductController extends GetxController {
   final PopularProductRepo popularProductRepo;
 
   // Underscore variables are private
-  List<dynamic> _popularProductList = [];
+  List<ProductModel> _popularProductList = [];
 
   // This public variable can be called from UI
-  List<dynamic> get popularProductList => _popularProductList;
+  List<ProductModel> get popularProductList => _popularProductList;
+
+  bool _isLoaded = false;
+  bool get isLoaded => _isLoaded;
 
   PopularProductController({required this.popularProductRepo});
 
@@ -19,6 +22,7 @@ class PopularProductController extends GetxController {
       _popularProductList = []; // Empty the list first so we never get repeated data
       _popularProductList
           .addAll(Product.fromJson(response.body).products); // Add response data to the list
+      _isLoaded = true;
       update(); // Update UI like a setState
     } else {
       print("FAIL");
