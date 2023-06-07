@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce/controllers/popular_product_controller.dart';
+import 'package:flutter_ecommerce/models/products_model.dart';
+import 'package:flutter_ecommerce/utils/app_constants.dart';
 import 'package:flutter_ecommerce/utils/colors.dart';
 import 'package:flutter_ecommerce/utils/dimensions.dart';
 import 'package:flutter_ecommerce/widgets/app_icon.dart';
 import 'package:flutter_ecommerce/widgets/big_text.dart';
 import 'package:flutter_ecommerce/widgets/expandable_text.dart';
-import 'package:flutter_ecommerce/widgets/icon_and_text_widget.dart';
-import 'package:flutter_ecommerce/widgets/small_text.dart';
 import 'package:get/get.dart';
 
 import '../../widgets/app_column.dart';
 
 class PopularFoodDetail extends StatelessWidget {
-  const PopularFoodDetail({super.key});
+  final int pageId;
+  const PopularFoodDetail({super.key, required this.pageId});
 
   @override
   Widget build(BuildContext context) {
+    PopularProductController controller = Get.find<PopularProductController>();
+    ProductModel product = controller.popularProductList[pageId];
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -26,10 +31,12 @@ class PopularFoodDetail extends StatelessWidget {
             child: Container(
               width: double.maxFinite,
               height: Dimensions.popularFoodImageSize,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage("assets/image/green-apples.webp"),
+                  image: NetworkImage(product.img != null
+                      ? "${AppConstants.BASE_URL}${AppConstants.UPLOAD_URL}/${product.img}"
+                      : "assets/image/green-apples.webp)"),
                 ),
               ),
             ),
@@ -70,16 +77,13 @@ class PopularFoodDetail extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppColumn(text: "Pommes"),
+                  AppColumn(text: product.name ?? "Sans titre"),
                   SizedBox(height: Dimensions.height20),
                   BigText(text: "Description"),
                   SizedBox(height: Dimensions.height10),
                   Expanded(
                     child: SingleChildScrollView(
-                      child: ExpandableText(
-                        text:
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit. Ut velit mauris, egestas sed, gravida nec, ornare ut, mi. Aenean ut orci vel massa suscipit pulvinar. Nulla sollicitudin. Fusce varius, ligula non tempus aliquam, nunc turpis ullamcorper nibh, in tempus sapien eros vitae ligula. Pellentesque rhoncus nunc et augue. Integer id felis. Curabitur aliquet pellentesque diam. Integer quis metus vitae elit lobortis egestas. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Morbi vel erat non mauris convallis vehicula. Nulla et sapien. Integer tortor tellus, aliquam faucibus, convallis id, congue eu, quam. Mauris ullamcorper felis vitae erat. Proin feugiat, augue non elementum posuere, metus purus iaculis lectus, et tristique ligula justo vitae magna.",
-                      ),
+                      child: ExpandableText(text: product.description ?? "Aucune description."),
                     ),
                   ),
                 ],
@@ -88,51 +92,66 @@ class PopularFoodDetail extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: Container(
-        //height: 120,
-        height: Dimensions.bottomHeightBar,
-        padding:
-            EdgeInsets.symmetric(vertical: Dimensions.height30, horizontal: Dimensions.width20),
-        decoration: BoxDecoration(
-          color: AppColors.buttonBackgroundColor,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(Dimensions.radius20 * 2),
-            topRight: Radius.circular(Dimensions.radius20 * 2),
+      bottomNavigationBar: GetBuilder<PopularProductController>(builder: (controller) {
+        return Container(
+          //height: 120,
+          height: Dimensions.bottomHeightBar,
+          padding:
+              EdgeInsets.symmetric(vertical: Dimensions.height30, horizontal: Dimensions.width20),
+          decoration: BoxDecoration(
+            color: AppColors.buttonBackgroundColor,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(Dimensions.radius20 * 2),
+              topRight: Radius.circular(Dimensions.radius20 * 2),
+            ),
           ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(
-                  vertical: Dimensions.height20, horizontal: Dimensions.width20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(Dimensions.radius20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(
+                    vertical: Dimensions.height10, horizontal: Dimensions.width10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(Dimensions.radius20),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.remove),
+                      color: AppColors.signColor,
+                      onPressed: () {
+                        controller.setQuantity(false);
+                      },
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
+                      child: BigText(text: controller.quantity.toString()),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.add),
+                      color: AppColors.signColor,
+                      onPressed: () {
+                        controller.setQuantity(true);
+                      },
+                    ),
+                  ],
+                ),
               ),
-              child: Row(
-                children: [
-                  Icon(Icons.remove, color: AppColors.signColor),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
-                    child: BigText(text: "0"),
-                  ),
-                  Icon(Icons.add, color: AppColors.signColor),
-                ],
+              Container(
+                padding: EdgeInsets.symmetric(
+                    vertical: Dimensions.height20, horizontal: Dimensions.width20),
+                decoration: BoxDecoration(
+                  color: AppColors.mainColor,
+                  borderRadius: BorderRadius.circular(Dimensions.radius20),
+                ),
+                child: BigText(text: "${product.price ?? 0}.00€  |  Ajouter", color: Colors.white),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                  vertical: Dimensions.height20, horizontal: Dimensions.width20),
-              decoration: BoxDecoration(
-                color: AppColors.mainColor,
-                borderRadius: BorderRadius.circular(Dimensions.radius20),
-              ),
-              child: BigText(text: "10.00€  |  Ajouter", color: Colors.white),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

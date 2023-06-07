@@ -50,24 +50,19 @@ class _FoodPageBodyState extends State<FoodPageBody> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // SLIDESHOW :
+        // POPULAR FOOD SLIDESHOW :
         // Wrap component with a GetBuilder<controller-class> :
         GetBuilder<PopularProductController>(builder: (controller) {
           return controller.isLoaded
               ? Container(
                   //height: 300,
                   height: Dimensions.pageView, // Responsive height
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed(RouteHelper.getPopularFood());
+                  child: PageView.builder(
+                    controller: pageController,
+                    itemCount: controller.popularProductList.length,
+                    itemBuilder: (context, index) {
+                      return _buildPageItem(index, controller.popularProductList[index]);
                     },
-                    child: PageView.builder(
-                      controller: pageController,
-                      itemCount: controller.popularProductList.length,
-                      itemBuilder: (context, index) {
-                        return _buildPageItem(index, controller.popularProductList[index]);
-                      },
-                    ),
                   ),
                 )
               : CircularProgressIndicator(color: AppColors.mainColor);
@@ -87,7 +82,6 @@ class _FoodPageBodyState extends State<FoodPageBody> {
             ),
           );
         }),
-        // POPULAR ITEMS :
         SizedBox(height: Dimensions.height30),
         Container(
           margin: EdgeInsets.only(left: Dimensions.width30),
@@ -109,6 +103,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
             ),
           ),
         ),
+        // RECOMMENDED FOOD LIST :
         GetBuilder<RecommendedProductController>(builder: (controller) {
           return controller.isLoaded
               ? ListView.builder(
@@ -122,7 +117,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                   itemCount: controller.recommendedProductList.length,
                   itemBuilder: (context, index) => GestureDetector(
                     onTap: () {
-                      Get.toNamed(RouteHelper.getRecommendedFood());
+                      Get.toNamed(RouteHelper.getRecommendedFood(index));
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 10, horizontal: Dimensions.width20),
@@ -167,12 +162,12 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                                     BigText(
                                         text: controller.recommendedProductList[index].name ??
                                             "Sans titre"),
-                                    Spacer(),
+                                    const Spacer(),
                                     SmallText(
                                         text:
                                             controller.recommendedProductList[index].description ??
                                                 ""),
-                                    Spacer(flex: 2),
+                                    const Spacer(flex: 2),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -193,7 +188,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                                         ),
                                       ],
                                     ),
-                                    Spacer(flex: 3),
+                                    const Spacer(flex: 3),
                                   ],
                                 ),
                               ),
@@ -237,20 +232,25 @@ class _FoodPageBodyState extends State<FoodPageBody> {
       transform: matrix,
       child: Stack(
         children: [
-          Container(
-            //height: 220,
-            height: Dimensions.pageViewContainer, // Responsive height
-            margin: const EdgeInsets.only(left: 10, right: 10),
-            decoration: BoxDecoration(
-              //borderRadius: BorderRadius.circular(30),
-              borderRadius: BorderRadius.circular(Dimensions.radius30),
+          GestureDetector(
+            onTap: () {
+              Get.toNamed(RouteHelper.getPopularFood(index));
+            },
+            child: Container(
+              //height: 220,
+              height: Dimensions.pageViewContainer, // Responsive height
+              margin: const EdgeInsets.only(left: 10, right: 10),
+              decoration: BoxDecoration(
+                //borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(Dimensions.radius30),
 
-              color: index.isEven ? const Color(0xFF69c5df) : const Color(0xFF9294cc),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(popularProduct.img != null
-                    ? "${AppConstants.BASE_URL}${AppConstants.UPLOAD_URL}/${popularProduct.img}"
-                    : "assets/image/green-apples.webp"),
+                color: index.isEven ? const Color(0xFF69c5df) : const Color(0xFF9294cc),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(popularProduct.img != null
+                      ? "${AppConstants.BASE_URL}${AppConstants.UPLOAD_URL}/${popularProduct.img}"
+                      : "assets/image/green-apples.webp"),
+                ),
               ),
             ),
           ),
