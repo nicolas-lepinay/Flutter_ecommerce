@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce/controllers/cart_controller.dart';
 import 'package:flutter_ecommerce/controllers/popular_product_controller.dart';
 import 'package:flutter_ecommerce/models/products_model.dart';
+import 'package:flutter_ecommerce/routes/route_helper.dart';
 import 'package:flutter_ecommerce/utils/app_constants.dart';
 import 'package:flutter_ecommerce/utils/colors.dart';
 import 'package:flutter_ecommerce/utils/dimensions.dart';
@@ -19,6 +21,7 @@ class PopularFoodDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     PopularProductController controller = Get.find<PopularProductController>();
     ProductModel product = controller.popularProductList[pageId];
+    controller.initProduct(Get.find<CartController>()); // Reset product quantity to 0
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -51,7 +54,8 @@ class PopularFoodDetail extends StatelessWidget {
               children: [
                 GestureDetector(
                     onTap: () {
-                      Get.back();
+                      //Get.back(); // Get.back() DELETES CONTROLLERS FROM MEMORY !
+                      Get.toNamed(RouteHelper.getInitial());
                     },
                     child: AppIcon(icon: Icons.arrow_back_ios)),
                 AppIcon(icon: Icons.shopping_cart_outlined),
@@ -139,14 +143,20 @@ class PopularFoodDetail extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                    vertical: Dimensions.height20, horizontal: Dimensions.width20),
-                decoration: BoxDecoration(
-                  color: AppColors.mainColor,
-                  borderRadius: BorderRadius.circular(Dimensions.radius20),
+              GestureDetector(
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                      vertical: Dimensions.height20, horizontal: Dimensions.width20),
+                  decoration: BoxDecoration(
+                    color: AppColors.mainColor,
+                    borderRadius: BorderRadius.circular(Dimensions.radius20),
+                  ),
+                  child:
+                      BigText(text: "${product.price ?? 0}.00€  |  Ajouter", color: Colors.white),
                 ),
-                child: BigText(text: "${product.price ?? 0}.00€  |  Ajouter", color: Colors.white),
+                onTap: () {
+                  controller.addItem(product);
+                },
               ),
             ],
           ),
