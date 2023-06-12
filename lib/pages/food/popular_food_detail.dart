@@ -21,7 +21,7 @@ class PopularFoodDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     PopularProductController controller = Get.find<PopularProductController>();
     ProductModel product = controller.popularProductList[pageId];
-    controller.initProduct(Get.find<CartController>()); // Reset product quantity to 0
+    controller.initProduct(product, Get.find<CartController>()); // Reset product quantity to 0
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -131,7 +131,11 @@ class PopularFoodDetail extends StatelessWidget {
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
-                      child: BigText(text: controller.quantity.toString()),
+                      // Montre toujours 0 :
+                      //child: BigText(text: controller.quantity.toString()),
+
+                      // Montre combien d'exemplaires de ce produit ont été ajoutés dans le panier :
+                      child: BigText(text: controller.inCartItems.toString()),
                     ),
                     IconButton(
                       icon: const Icon(Icons.add),
