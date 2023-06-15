@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/controllers/cart_controller.dart';
 import 'package:flutter_ecommerce/data/repository/popular_product_repo.dart';
+import 'package:flutter_ecommerce/models/cart_model.dart';
 import 'package:flutter_ecommerce/models/products_model.dart';
 import 'package:flutter_ecommerce/utils/colors.dart';
 import 'package:get/get.dart';
@@ -66,15 +67,6 @@ class PopularProductController extends GetxController {
   }
 
   void addItem(ProductModel product) {
-    // if (_inCartItems + _quantity < 1) {
-    //   Get.snackbar(
-    //     "Aucun produit sélectionné",
-    //     "Veuillez sélectionner au moins 1 produit.",
-    //     backgroundColor: AppColors.mainColor,
-    //     colorText: Colors.white,
-    //   );
-    //   return;
-    // }
     _cart.addItem(product, _quantity);
     _quantity = 0; // ??? Voir 09:56:00 à la vidéo 1...
     // ...probablement pour que la page produit n'affiche pas la dernière quantité ajoutée sur toutes les pages produits
@@ -82,6 +74,15 @@ class PopularProductController extends GetxController {
     _cart.items.forEach((key, value) {
       print(
           "Product ID is ${value.id.toString()} and quantity in cart is ${value.quantity.toString()}");
+      update(); // Update UI (for the icon of number of items in cart)
     });
+  }
+
+  int get totalItems {
+    return _cart.totalItems;
+  }
+
+  List<CartModel> get getItems {
+    return _cart.getItems;
   }
 }

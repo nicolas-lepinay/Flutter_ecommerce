@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/controllers/cart_controller.dart';
 import 'package:flutter_ecommerce/controllers/popular_product_controller.dart';
 import 'package:flutter_ecommerce/models/products_model.dart';
+import 'package:flutter_ecommerce/pages/cart/cart_page.dart';
 import 'package:flutter_ecommerce/routes/route_helper.dart';
 import 'package:flutter_ecommerce/utils/app_constants.dart';
 import 'package:flutter_ecommerce/utils/colors.dart';
@@ -58,7 +59,41 @@ class PopularFoodDetail extends StatelessWidget {
                       Get.toNamed(RouteHelper.getInitial());
                     },
                     child: AppIcon(icon: Icons.arrow_back_ios)),
-                AppIcon(icon: Icons.shopping_cart_outlined),
+                GetBuilder<PopularProductController>(
+                  builder: (controller) {
+                    return GestureDetector(
+                      onTap: () {
+                        Get.to(() => CartPage());
+                      },
+                      child: Stack(
+                        children: [
+                          AppIcon(icon: Icons.shopping_cart_outlined),
+                          controller.totalItems >= 1
+                              ? Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      AppIcon(
+                                          icon: Icons.circle,
+                                          size: 20,
+                                          iconColor: Colors.transparent,
+                                          backgroundColor: AppColors.mainColor),
+                                      BigText(
+                                        text: controller.totalItems.toString(),
+                                        size: 12,
+                                        color: Colors.white,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),
