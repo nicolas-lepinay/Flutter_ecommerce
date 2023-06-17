@@ -14,20 +14,22 @@ class CartController extends GetxController {
 
   void addItem(ProductModel product, int quantity) {
     int totalQuantity = 0;
-    // If product is already in the cart Map, update its quantity
+    // 🔄 If product is already in the cart Map, update its quantity
     if (_items.containsKey(product.id)) {
       _items.update(product.id, (value) {
         totalQuantity = value.quantity! + quantity;
         return CartModel(
-            id: value.id,
-            name: value.name,
-            price: value.price,
-            img: value.img,
-            quantity: value.quantity! + quantity,
-            isExist: true,
-            time: DateTime.now().toString());
+          id: value.id,
+          name: value.name,
+          price: value.price,
+          img: value.img,
+          quantity: value.quantity! + quantity,
+          isExist: true,
+          time: DateTime.now().toString(),
+          product: product,
+        );
       });
-      // Supprimer le produit du panier si sa quantité est égale à 0
+      // ❌ Supprimer le produit du panier si sa quantité est égale à 0
       if (totalQuantity <= 0) {
         _items.remove(product.id);
         Get.snackbar(
@@ -39,17 +41,19 @@ class CartController extends GetxController {
       }
     } else {
       if (quantity > 0) {
-        // If product is not in the cart Map yet, add it
+        // ➕ If product is not in the cart Map yet, add it
         _items.putIfAbsent(
           product.id,
           () => CartModel(
-              id: product.id,
-              name: product.name,
-              price: product.price,
-              img: product.img,
-              quantity: quantity,
-              isExist: true,
-              time: DateTime.now().toString()),
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            img: product.img,
+            quantity: quantity,
+            isExist: true,
+            time: DateTime.now().toString(),
+            product: product,
+          ),
         );
       } else {
         Get.snackbar(
@@ -60,6 +64,7 @@ class CartController extends GetxController {
         );
       }
     }
+    update(); // Update UI
   }
 
   // Check if product is in cart or not when popular_food_detail launches

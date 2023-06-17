@@ -163,10 +163,12 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                                         text: controller.recommendedProductList[index].name ??
                                             "Sans titre"),
                                     const Spacer(),
+                                    // SmallText(
+                                    //     text:
+                                    //         controller.recommendedProductList[index].description ??
+                                    //             ""),
                                     SmallText(
-                                        text:
-                                            controller.recommendedProductList[index].description ??
-                                                ""),
+                                        text: "Bitter Oranges are often used in the Caribbeans"),
                                     const Spacer(flex: 2),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

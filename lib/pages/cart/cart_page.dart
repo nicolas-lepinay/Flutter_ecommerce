@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/controllers/cart_controller.dart';
+import 'package:flutter_ecommerce/models/cart_model.dart';
 import 'package:flutter_ecommerce/pages/home/main_food_page.dart';
+import 'package:flutter_ecommerce/routes/route_helper.dart';
 import 'package:flutter_ecommerce/utils/app_constants.dart';
 import 'package:flutter_ecommerce/utils/colors.dart';
 import 'package:flutter_ecommerce/utils/dimensions.dart';
@@ -33,7 +35,7 @@ class CartPage extends StatelessWidget {
                 SizedBox(width: Dimensions.width20 * 5),
                 GestureDetector(
                   onTap: () {
-                    Get.to(() => MainFoodPage());
+                    Get.toNamed(RouteHelper.getInitial());
                   },
                   child: AppIcon(
                     icon: Icons.home_outlined,
@@ -62,12 +64,13 @@ class CartPage extends StatelessWidget {
                 context: context,
                 removeTop: true,
                 child: GetBuilder<CartController>(builder: (cartController) {
+                  List<CartModel> _cartList = cartController.getItems;
                   return ListView.builder(
-                    itemCount: cartController.getItems.length,
+                    itemCount: _cartList.length,
                     itemBuilder: (_, index) => Container(
                         height: 100,
                         width: double.maxFinite,
-                        margin: EdgeInsets.only(bottom: 10),
+                        margin: const EdgeInsets.only(bottom: 10),
                         child: Row(
                           children: [
                             Container(
@@ -85,7 +88,7 @@ class CartPage extends StatelessWidget {
                             ),
                             Expanded(
                               child: Container(
-                                padding: EdgeInsets.only(left: 10),
+                                padding: const EdgeInsets.only(left: 10),
                                 height: Dimensions.height20 * 5,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,23 +119,22 @@ class CartPage extends StatelessWidget {
                                                 icon: const Icon(Icons.remove),
                                                 color: AppColors.signColor,
                                                 onPressed: () {
-                                                  //controller.setQuantity(false);
+                                                  cartController.addItem(
+                                                      _cartList[index].product!, -1);
                                                 },
                                               ),
                                               Padding(
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: Dimensions.width10 / 2),
-                                                // Montre toujours 0 :
-                                                //child: BigText(text: controller.quantity.toString()),
-
-                                                // Montre combien d'exemplaires de ce produit ont été ajoutés dans le panier :
-                                                child: BigText(text: "0"),
+                                                child: BigText(
+                                                    text: _cartList[index].quantity.toString()),
                                               ),
                                               IconButton(
                                                 icon: const Icon(Icons.add),
                                                 color: AppColors.signColor,
                                                 onPressed: () {
-                                                  //controller.setQuantity(true);
+                                                  cartController.addItem(
+                                                      _cartList[index].product!, 1);
                                                 },
                                               ),
                                             ],

@@ -58,16 +58,16 @@ class PopularFoodDetail extends StatelessWidget {
                       //Get.back(); // Get.back() DELETES CONTROLLERS FROM MEMORY !
                       Get.toNamed(RouteHelper.getInitial());
                     },
-                    child: AppIcon(icon: Icons.arrow_back_ios)),
+                    child: const AppIcon(icon: Icons.arrow_back_ios)),
                 GetBuilder<PopularProductController>(
                   builder: (controller) {
                     return GestureDetector(
                       onTap: () {
-                        Get.to(() => CartPage());
+                        if (controller.totalItems >= 1) Get.toNamed(RouteHelper.getCart());
                       },
                       child: Stack(
                         children: [
-                          AppIcon(icon: Icons.shopping_cart_outlined),
+                          const AppIcon(icon: Icons.shopping_cart_outlined),
                           controller.totalItems >= 1
                               ? Positioned(
                                   top: 0,

@@ -35,6 +35,12 @@ class RouteHelper {
         );
       },
     ),
-    GetPage(name: cart, page: () => CartPage()),
+    GetPage(
+      name: cart,
+      page: () {
+        return CartPage();
+      },
+      transition: Transition.fadeIn,
+    ),
   ];
 }

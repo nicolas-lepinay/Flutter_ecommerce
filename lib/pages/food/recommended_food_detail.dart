@@ -4,6 +4,7 @@ import 'package:flutter_ecommerce/controllers/popular_product_controller.dart';
 import 'package:flutter_ecommerce/controllers/recommended_product_controller.dart';
 import 'package:flutter_ecommerce/models/products_model.dart';
 import 'package:flutter_ecommerce/pages/cart/cart_page.dart';
+import 'package:flutter_ecommerce/routes/route_helper.dart';
 import 'package:flutter_ecommerce/utils/app_constants.dart';
 import 'package:flutter_ecommerce/utils/colors.dart';
 import 'package:flutter_ecommerce/utils/dimensions.dart';
@@ -36,16 +37,16 @@ class RecommendedFoodDetail extends StatelessWidget {
                     onTap: () {
                       Get.back();
                     },
-                    child: AppIcon(icon: Icons.clear)),
+                    child: const AppIcon(icon: Icons.clear)),
                 GetBuilder<PopularProductController>(
                   builder: (controller) {
                     return GestureDetector(
                       onTap: () {
-                        Get.to(() => CartPage());
+                        if (controller.totalItems >= 1) Get.toNamed(RouteHelper.getCart());
                       },
                       child: Stack(
                         children: [
-                          AppIcon(icon: Icons.shopping_cart_outlined),
+                          const AppIcon(icon: Icons.shopping_cart_outlined),
                           controller.totalItems >= 1
                               ? Positioned(
                                   top: 0,
