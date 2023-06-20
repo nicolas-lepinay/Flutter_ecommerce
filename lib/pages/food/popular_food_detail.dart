@@ -16,7 +16,8 @@ import '../../widgets/app_column.dart';
 
 class PopularFoodDetail extends StatelessWidget {
   final int pageId;
-  const PopularFoodDetail({super.key, required this.pageId});
+  final String? previousPage;
+  const PopularFoodDetail({super.key, required this.pageId, this.previousPage});
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +57,12 @@ class PopularFoodDetail extends StatelessWidget {
                 GestureDetector(
                     onTap: () {
                       //Get.back(); // Get.back() DELETES CONTROLLERS FROM MEMORY !
-                      Get.toNamed(RouteHelper.getInitial());
+
+                      if (previousPage == "cartpage") {
+                        Get.toNamed(RouteHelper.getCart());
+                      } else {
+                        Get.toNamed(RouteHelper.getInitial());
+                      }
                     },
                     child: const AppIcon(icon: Icons.arrow_back_ios)),
                 GetBuilder<PopularProductController>(

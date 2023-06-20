@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/controllers/cart_controller.dart';
+import 'package:flutter_ecommerce/controllers/popular_product_controller.dart';
+import 'package:flutter_ecommerce/controllers/recommended_product_controller.dart';
 import 'package:flutter_ecommerce/models/cart_model.dart';
 import 'package:flutter_ecommerce/pages/home/main_food_page.dart';
 import 'package:flutter_ecommerce/routes/route_helper.dart';
@@ -73,18 +75,39 @@ class CartPage extends StatelessWidget {
                         margin: const EdgeInsets.only(bottom: 10),
                         child: Row(
                           children: [
-                            Container(
-                              width: Dimensions.height20 * 5,
-                              height: Dimensions.height20 * 5,
-                              margin: EdgeInsets.only(bottom: Dimensions.height10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(Dimensions.radius20),
-                                  color: Colors.white,
-                                  image: DecorationImage(
-                                    image: NetworkImage(
-                                        "${AppConstants.BASE_URL}${AppConstants.UPLOAD_URL}/${cartController.getItems[index].img!}"),
-                                    fit: BoxFit.cover,
-                                  )),
+                            GestureDetector(
+                              onTap: () {
+                                // Returns the index of the product inside popularProductList (or -1)
+                                var popularIndex = Get.find<PopularProductController>()
+                                    .popularProductList
+                                    .indexOf(_cartList[index].product!);
+
+                                if (popularIndex >= 0) {
+                                  // Goes to popular product whose index is popularIndex
+                                  Get.toNamed(RouteHelper.getPopularFood(popularIndex, "cartpage"));
+                                } else {
+                                  // Product not found in PopularProduct list : try Recommended list
+                                  var recommendedIndex = Get.find<RecommendedProductController>()
+                                      .recommendedProductList
+                                      .indexOf(_cartList[index].product!);
+
+                                  // Goes to recommended product whose index is recommendedIndex
+                                  Get.toNamed(RouteHelper.getRecommendedFood(recommendedIndex));
+                                }
+                              },
+                              child: Container(
+                                width: Dimensions.height20 * 5,
+                                height: Dimensions.height20 * 5,
+                                margin: EdgeInsets.only(bottom: Dimensions.height10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(Dimensions.radius20),
+                                    color: Colors.white,
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                          "${AppConstants.BASE_URL}${AppConstants.UPLOAD_URL}/${cartController.getItems[index].img!}"),
+                                      fit: BoxFit.cover,
+                                    )),
+                              ),
                             ),
                             Expanded(
                               child: Container(
