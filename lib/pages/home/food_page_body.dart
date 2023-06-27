@@ -42,8 +42,8 @@ class _FoodPageBodyState extends State<FoodPageBody> {
   // Dispose : disable widget when user leaves the page, to prevent memory leak
   @override
   void dispose() {
-    super.dispose();
     pageController.dispose();
+    super.dispose();
   }
 
   @override

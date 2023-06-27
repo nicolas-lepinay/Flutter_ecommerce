@@ -30,14 +30,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      // theme: ThemeData(
-      //   primarySwatch: Colors.blue,
-      // ),
-      home: const MainFoodPage(),
+      //home: const MainFoodPage(),
       initialRoute: RouteHelper.initial,
       getPages: RouteHelper.routes,
     );
-    //home: const PopularFoodDetail());
-    //home: const RecommendedFoodDetail());
   }
 }
