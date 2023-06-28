@@ -3,13 +3,17 @@ import 'package:flutter_ecommerce/pages/food/popular_food_detail.dart';
 import 'package:flutter_ecommerce/pages/food/recommended_food_detail.dart';
 import 'package:flutter_ecommerce/pages/home/home_page.dart';
 import 'package:flutter_ecommerce/pages/home/main_food_page.dart';
+import 'package:flutter_ecommerce/pages/splash/splash_screen.dart';
 import 'package:get/get.dart';
 
 class RouteHelper {
+  static const String splashScreen = "/splash-screen";
   static const String initial = "/";
   static const String popularFood = "/popular-food";
   static const String recommendedFood = "/recommended-food";
   static const String cart = "/cart";
+
+  static String getSplashScreen() => "$splashScreen";
 
   static String getInitial() => "$initial";
 
@@ -22,6 +26,7 @@ class RouteHelper {
   static String getCart() => "$cart";
 
   static List<GetPage> routes = [
+    GetPage(name: splashScreen, page: () => SplashScreen()),
     GetPage(name: initial, page: () => HomePage()),
     GetPage(
       name: popularFood,
