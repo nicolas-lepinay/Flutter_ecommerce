@@ -5,5 +5,3 @@
 ⚙️ Développée avec 𝐅𝐥𝐮𝐭𝐭𝐞𝐫.
 
 👉 Contributeur : Nicolas Lépinay.
-
-📸 (Captures d'écran bientôt disponibles).
